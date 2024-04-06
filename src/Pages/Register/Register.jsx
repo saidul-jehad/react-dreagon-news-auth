@@ -1,28 +1,37 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-
+import { AuthContext } from "../../Provider/AuthProvider";
 
 const Register = () => {
 
+    const { createUser} = useContext(AuthContext)
 
     const handleRegister = e => {
         e.preventDefault()
 
-        const name = e.target.name.value;
-        const photoURL = e.target.photoURL.value;
+        // const name = e.target.name.value;
+        // const photoURL = e.target.photoURL.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
 
 
+        // create user
+        createUser(email, password)
+            .then(result => {
+                console.log(result.user)
+            })
 
-        console.log(name, photoURL, email, password);
+            .catch(error => console.log(error))
+
+
 
     }
 
     return (
         <div className="justify-center flex min-h-screen bg-base-200">
-            <div className="hero-content md:w-[800px]  ">
+            <div className="hero-content md:w-1/2  ">
 
-                <div className="card shrink-0 w-full max-w-[650px] shadow-2xl bg-base-100">
+                <div className="card shrink-0 w-full shadow-2xl bg-base-100">
                     <h1 className="text-2xl font-semibold text-center">Register Your Account</h1>
                     <hr className=" mt-10 h-0 mx-6" />
 
@@ -72,7 +81,7 @@ const Register = () => {
                         </div>
                         <p className="text-center mt-2">
                             <small>
-                                Already Have an Account ? Please <Link to='/login' className="btn-link">Login</Link>
+                                Already Have an Account ? Please <Link to='/login' className="btn-link font-bold">Login</Link>
                             </small>
                         </p>
                     </form>

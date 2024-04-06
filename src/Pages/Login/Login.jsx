@@ -1,23 +1,49 @@
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { AuthContext } from "../../Provider/AuthProvider";
+
 
 const Login = () => {
+    const location = useLocation()
+    const navigate = useNavigate()
+    console.log('login page' ,location);
 
+
+    const { loginUser } = useContext(AuthContext)
     const handleLogin = e => {
         e.preventDefault()
 
-        const email = e.target.email.value;
-        const password = e.target.password.value;
+
+        const form = new FormData(e.currentTarget)
+        const email = form.get('email')
+        const password = form.get('password')
+
+        // const email = e.target.email.value;
+        // const password = e.target.password.value;
+
+        // login user
+        loginUser(email, password)
+            .then(result => {
+                console.log(result);
+
+                // navigate after login
+                navigate(location?.state ? location.state : '/')
+            })
+            .catch(error => {
+                console.log(error);
+            })
 
 
 
-        console.log(email, password);
 
+        console.log(email, password, 'eee');
     }
     return (
-        <div className="justify-center flex min-h-screen bg-base-200">
-            <div className="hero-content md:w-[700px] ">
 
-                <div className="card shrink-0 w-full max-w-[650px] shadow-2xl bg-base-100">
+        <div className="justify-center flex min-h-screen bg-base-200">
+            <div className="hero-content md:w-1/2 ">
+
+                <div className="card shrink-0 w-full shadow-2xl bg-base-100">
                     <h1 className="text-2xl font-semibold text-center">Login Your Account</h1>
                     <hr className=" mt-8 h-0 mx-6" />
 
@@ -54,7 +80,7 @@ const Login = () => {
 
                         <p className="text-center mt-2">
                             <small>
-                                Dont Have an Account ? Please <Link to='/register' className="btn-link">Register</Link>
+                                Dont Have an Account ? Please <Link to='/register' className="btn-link font-bold">Register</Link>
                             </small>
                         </p>
                     </form>
